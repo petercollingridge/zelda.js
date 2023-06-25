@@ -2,7 +2,8 @@ const WIDTH = 1280;
 const HEIGHT = 720;
 
 const FPS = 60;
-const TILESIZE = 64;
+const SPRITE_SIZE = 64;
+const TILE_SIZE = 40;
 
 const WORLD_MAP = [
   ['x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x'],

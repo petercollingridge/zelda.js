@@ -1,5 +1,5 @@
 class Tile {
-  constructor(x, y, groups) {
+  constructor(x, y, groups=[]) {
     this.x = x;
     this.y = y;
     this.groups = groups;
@@ -14,6 +14,6 @@ class Tile {
   }
 
   draw(ctx) {
-    ctx.drawImage(this.image, this.x, this.y);
+    ctx.drawImage(this.image, this.x, this.y, TILE_SIZE, TILE_SIZE);
   }
 }

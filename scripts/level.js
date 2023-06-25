@@ -11,14 +11,16 @@ class Level {
   _createMap() {
     for (let i = 0; i < WORLD_MAP.length; i++) {
       const row = WORLD_MAP[i];
-      const y = i * TILESIZE;
+      const y = i * TILE_SIZE;
 
       for (let j = 0; j < row.length; j++) {
-        const x = j * TILESIZE;
+        const x = j * TILE_SIZE;
 
         if (row[j] === 'x') {
           new Tile(x, y, [this.visibleSprites]);
-          console.log(x, y);
+        }
+        else if (row[j] === 'p') {
+          new Player(x, y, [this.visibleSprites]);
         }
       }
     }
