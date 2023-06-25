@@ -4,7 +4,10 @@ class Sprite {
     this.y = y;
 
     this.groups = groups;
-    this.image = document.getElementById(imageName);
+
+    if (imageName) {
+      this.image = document.getElementById(imageName);
+    }
 
     groups.forEach((group) => {
       group.push(this);

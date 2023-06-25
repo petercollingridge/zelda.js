@@ -21,6 +21,19 @@ class Game {
 
     this.player = new Player(2000, 1450, [this.visibleSprites], this.obstacleSprites);
 
+    for (let i = 0; i < FLOOR_BLOCKS.length; i++) {
+      const row = FLOOR_BLOCKS[i];
+      const y = i * TILE_SIZE;
+
+      for (let j = 0; j < row.length; j++) {
+        const x = j * TILE_SIZE;
+
+        if (row[j] === '1') {
+          new Tile(x, y, null, [this.obstacleSprites]);
+        }
+      }
+    }
+
     // for (let i = 0; i < WORLD_MAP.length; i++) {
     //   const row = WORLD_MAP[i];
     //   const y = i * TILE_SIZE;
