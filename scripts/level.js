@@ -17,16 +17,17 @@ class Level {
         const x = j * TILE_SIZE;
 
         if (row[j] === 'x') {
-          new Tile(x, y, [this.visibleSprites]);
+          new Tile(x, y, [this.visibleSprites, this.obstacleSprites]);
         }
         else if (row[j] === 'p') {
-          new Player(x, y, [this.visibleSprites]);
+          this.player = new Player(x, y, [this.visibleSprites]);
         }
       }
     }
   }
 
   update(dt) {
+    this.player.update(dt);
   }
 
   draw(ctx) {

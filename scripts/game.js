@@ -4,11 +4,12 @@ class Game {
     this.height = height;
     this.time = 0;
     this.level = new Level();
+    this.inputHander = new InputHandler(this);
   }
 
   update(dt) {
     this.time += dt;
-    this.level.update(this.dt);
+    this.level.update(dt);
   }
 
   draw(ctx) {
