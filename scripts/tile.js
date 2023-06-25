@@ -1,19 +1,5 @@
-class Tile {
-  constructor(x, y, groups=[]) {
-    this.x = x;
-    this.y = y;
-    this.groups = groups;
-    this.image = document.getElementById(`img-rock`);
-
-    groups.forEach((group) => {
-      group.push(this);
-    });
-  }
-
-  update(dt) {
-  }
-
-  draw(ctx) {
-    ctx.drawImage(this.image, this.x, this.y, TILE_SIZE, TILE_SIZE);
+class Tile extends Sprite {
+  constructor(x, y, groups) {
+    super(x, y, 'img-rock', groups);
   }
 }
