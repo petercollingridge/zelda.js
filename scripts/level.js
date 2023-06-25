@@ -22,10 +22,14 @@ class Level {
           new Tile(x, y, [this.visibleSprites, this.obstacleSprites]);
         }
         else if (row[j] === 'p') {
-          this.player = new Player(x, y, [this.visibleSprites]);
+          this.player = new Player(x, y, [this.visibleSprites], this.obstacleSprites);
         }
       }
     }
+  }
+
+  collision(direction) {
+
   }
 
   update(dt) {
