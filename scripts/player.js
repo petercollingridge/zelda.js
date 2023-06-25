@@ -32,35 +32,37 @@ class Player extends Sprite {
       speed *= Math.SQRT1_2; 
     }
 
-    this.moveX(dx * speed);
+    this.x += dx * speed;
     this._collide('horizontal');
-    this.moveY(dy * speed);
+    this.y += dy * speed;
     this._collide('vertical');
   }
 
   _collide(direction) {
+    let hitbox = this.getHitbox();
+
     if (direction === 'horizontal') {
       this.obstacleSprites.forEach((sprite) => {
-        if (collision(this, sprite)) {
+        const hitbox2 = sprite.getHitbox();
+        if (collision(hitbox, hitbox2)) {
           if (this.dx > 0) {  // Moving right
-            const dx = sprite.x - this.x2;
-            this.moveX(dx);
+            this.x += hitbox2.x1 - hitbox.x2;
           } else if (this.dx < 0) {  // Moving left
-            const dx = sprite.x2 - this.x;
-            this.moveX(dx);
+            this.x += hitbox2.x2 - hitbox.x1;
           }
+          hitbox = this.getHitbox();
         }
       });
     } else if (direction === 'vertical') {
       this.obstacleSprites.forEach((sprite) => {
-        if (collision(this, sprite)) {
+        const hitbox2 = sprite.getHitbox();
+        if (collision(hitbox, hitbox2)) {
           if (this.dy > 0) {  // Moving down
-            const dy = sprite.y - this.y2;
-            this.moveY(dy);
+            this.y += hitbox2.y1 - hitbox.y2;
           } else if (this.dy < 0) {  // Moving up
-            const dy = sprite.y2 - this.y;
-            this.moveY(dy);
+            this.y += hitbox2.y2 - hitbox.y1;
           }
+          hitbox = this.getHitbox();
         }
       });
     }
