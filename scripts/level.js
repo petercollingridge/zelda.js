@@ -5,9 +5,9 @@ class Level {
     this.obstacleSprites = [];
   }
 
-  draw(ctx) {
+  update(dt) {
   }
 
-  update(dt) {
+  draw(ctx) {
   }
 }
