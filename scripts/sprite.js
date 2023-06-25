@@ -16,8 +16,10 @@ class Sprite {
   update(dt) {
   }
 
-  draw(ctx) {
-    ctx.drawImage(this.image, this.x, this.y, TILE_SIZE, TILE_SIZE);
+  draw(ctx, offsetX, offsetY) {
+    const x = this.x + offsetX;
+    const y = this.y + offsetY;
+    ctx.drawImage(this.image, x, y, TILE_SIZE, TILE_SIZE);
   }
 
   move(dx, dy) {

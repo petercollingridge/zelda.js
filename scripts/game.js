@@ -6,17 +6,29 @@ class Game {
 
     this.inputHandler = new InputHandler();
     this.level = new Level(this);
+
+    this.offsetX = 0;
+    this.offsetY = 0;
   }
 
   update(dt) {
     this.time += dt;
-    this.level.update(dt);
+
+    const keys = this.inputHandler.keys;
+    this.player.update(dt, keys);
+
+    this._updateCamera();
   }
 
   draw(ctx) {
     ctx.clearRect(0, 0, this.width, this.height);
-    this.level.draw(ctx);
+    this.level.draw(ctx, this.offsetX, this.offsetY);
     // this.debug(ctx);
+  }
+
+  _updateCamera() {
+    this.offsetX = this.width * 0.5 - this.player.x; 
+    this.offsetY = this.height * 0.5 - this.player.y; 
   }
 
   debug(ctx) {

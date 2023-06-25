@@ -22,22 +22,17 @@ class Level {
           new Tile(x, y, [this.visibleSprites, this.obstacleSprites]);
         }
         else if (row[j] === 'p') {
-          this.player = new Player(x, y, [this.visibleSprites], this.obstacleSprites);
+          this.game.player = new Player(x, y, [this.visibleSprites], this.obstacleSprites);
         }
       }
     }
   }
 
-  collision(direction) {
+  update(dt) {}
 
-  }
-
-  update(dt) {
-    const keys = this.game.inputHandler.keys;
-    this.player.update(dt, keys);
-  }
-
-  draw(ctx) {
-    this.visibleSprites.forEach((sprite) => sprite.draw(ctx));
+  draw(ctx, offsetX, offsetY) {
+    this.visibleSprites.forEach((sprite) => {
+      sprite.draw(ctx, offsetX, offsetY)
+    });
   }
 }
