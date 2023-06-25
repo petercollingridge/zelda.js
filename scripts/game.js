@@ -19,36 +19,11 @@ class Game {
   _createMap() {
     this.groundImage = document.getElementById('img-ground');
 
-    this.player = new Player(2000, 1450, [this.visibleSprites], this.obstacleSprites);
-
-    for (let i = 0; i < FLOOR_BLOCKS.length; i++) {
-      const row = FLOOR_BLOCKS[i];
-      const y = i * TILE_SIZE;
-
-      for (let j = 0; j < row.length; j++) {
-        const x = j * TILE_SIZE;
-
-        if (row[j] === '1') {
-          new Tile(x, y, null, [this.obstacleSprites]);
-        }
-      }
-    }
-
-    // for (let i = 0; i < WORLD_MAP.length; i++) {
-    //   const row = WORLD_MAP[i];
-    //   const y = i * TILE_SIZE;
-
-    //   for (let j = 0; j < row.length; j++) {
-    //     const x = j * TILE_SIZE;
-
-    //     if (row[j] === 'x') {
-    //       new Tile(x, y, [this.visibleSprites, this.obstacleSprites]);
-    //     }
-    //     else if (row[j] === 'p') {
-    //       this.player = new Player(x, y, [this.visibleSprites], this.obstacleSprites);
-    //     }
-    //   }
-    // }
+    this.player = new Player(2000, 1450, this.obstacleSprites);
+    this.visibleSprites.push(this.player);
+    
+    getTiles(BLOCK_TILES, getBlockName, [this.obstacleSprites]);
+    getTiles(GRASS_TILES, getGrasskName, [this.visibleSprites]);
   }
 
   update(dt) {

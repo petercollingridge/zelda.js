@@ -1,9 +1,9 @@
 class Player extends Sprite {
-  constructor(x, y, groups, obstacleSprites) {
-    super(x, y, 'img-player', groups);
+  constructor(x, y, obstacleSprites) {
+    super(x, y, 'img-player');
     this.obstacleSprites = obstacleSprites;
 
-    this.speed = 0.4;
+    this.speed = 0.5;
   }
 
   update(dt, keys) {
