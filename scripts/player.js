@@ -6,19 +6,32 @@ class Player extends Sprite {
   }
 
   update(dt, keys) {
-    const speed = this.speed * dt;
+    this._move(dt, keys);
+  }
+
+  _move(dt, keys) {
+    let dx = 0;
+    let dy = 0;
 
     if (keys.has('ArrowRight')) {
-      this.x += speed;
+      dx = 1;
     } else if (keys.has('ArrowLeft')) {
-      this.x -= speed;
+      dx = -1;
     }
 
     if (keys.has('ArrowDown')) {
-      this.y += speed;
+      dy = 1;
     } else if (keys.has('ArrowUp')) {
-      this.y -= speed;
+      dy = 1;
     }
 
+    let speed = this.speed * dt;
+    if (dx && dy) {
+      // Moving diagonally, so normalise
+      speed *= Math.SQRT1_2; 
+    }
+
+    this.x += dx * speed;
+    this.y += dy * speed;
   }
 }
