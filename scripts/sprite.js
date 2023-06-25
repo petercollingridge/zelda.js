@@ -26,7 +26,7 @@ class Sprite {
       y1: this.y,
       x2: this.x + TILE_SIZE,
       y2: this.y + TILE_SIZE,
-    }
+    };
   }
 
   move(dx, dy) {

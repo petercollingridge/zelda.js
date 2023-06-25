@@ -25,6 +25,15 @@ class Player extends Sprite {
     this._move(this.dx, this.dy, dt);
   }
 
+  getHitbox() {
+    return {
+      x1: this.x,
+      y1: this.y + 12,
+      x2: this.x + TILE_SIZE,
+      y2: this.y + TILE_SIZE - 12,
+    };
+  }
+
   _move(dx, dy, dt) {
     let speed = this.speed * dt;
     if (dx && dy) {
