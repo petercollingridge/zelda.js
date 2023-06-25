@@ -3,12 +3,10 @@ class Game {
     this.width = width;
     this.height = height;
     this.time = 0;
-
-    this.inputHandler = new InputHandler();
-    this.level = new Level(this);
-
     this.offsetX = 0;
     this.offsetY = 0;
+
+    this.inputHandler = new InputHandler();
 
     // Sprite group setup
     this.visibleSprites = [];
@@ -19,21 +17,25 @@ class Game {
   }
 
   _createMap() {
-    for (let i = 0; i < WORLD_MAP.length; i++) {
-      const row = WORLD_MAP[i];
-      const y = i * TILE_SIZE;
+    this.groundImage = document.getElementById('img-ground');
 
-      for (let j = 0; j < row.length; j++) {
-        const x = j * TILE_SIZE;
+    this.player = new Player(2000, 1450, [this.visibleSprites], this.obstacleSprites);
 
-        if (row[j] === 'x') {
-          new Tile(x, y, [this.visibleSprites, this.obstacleSprites]);
-        }
-        else if (row[j] === 'p') {
-          this.player = new Player(x, y, [this.visibleSprites], this.obstacleSprites);
-        }
-      }
-    }
+    // for (let i = 0; i < WORLD_MAP.length; i++) {
+    //   const row = WORLD_MAP[i];
+    //   const y = i * TILE_SIZE;
+
+    //   for (let j = 0; j < row.length; j++) {
+    //     const x = j * TILE_SIZE;
+
+    //     if (row[j] === 'x') {
+    //       new Tile(x, y, [this.visibleSprites, this.obstacleSprites]);
+    //     }
+    //     else if (row[j] === 'p') {
+    //       this.player = new Player(x, y, [this.visibleSprites], this.obstacleSprites);
+    //     }
+    //   }
+    // }
   }
 
   update(dt) {
@@ -47,11 +49,12 @@ class Game {
 
   draw(ctx) {
     ctx.clearRect(0, 0, this.width, this.height);
+    ctx.drawImage(this.groundImage, this.offsetX, this.offsetY);
 
     this.visibleSprites = this.visibleSprites.sort((a, b) => a.y - b.y);
 
     this.visibleSprites.forEach((sprite) => {
-      sprite.draw(ctx, this.offsetX, this.offsetY)
+      sprite.draw(ctx, this.offsetX, this.offsetY);
     });
     // this.debug(ctx);
   }

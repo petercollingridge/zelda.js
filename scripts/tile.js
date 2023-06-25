@@ -1,6 +1,6 @@
 class Tile extends Sprite {
-  constructor(x, y, groups) {
-    super(x, y, 'img-rock', groups);
+  constructor(x, y, name, groups) {
+    super(x, y, name, groups);
   }
 
   getHitbox() {
