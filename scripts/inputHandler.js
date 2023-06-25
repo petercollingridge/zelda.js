@@ -1,27 +1,13 @@
   class InputHandler {
-    constructor(game) {
+    constructor() {
       this.keys = new Set();
 
       window.addEventListener('keydown', (evt) => {
-        switch (evt.key) {
-          case 'ArrowLeft':
-            this.game.level.player.dx = -1;
-            break;
-          case 'ArrowRight':
-            this.game.level.player.dx = 1;
-            break;
-          case 'ArrowUp':
-            this.game.level.player.dy = -1;
-            break;
-          case 'ArrowDown':
-            this.game.level.player.dy = 1;
-            break;
-        }
+        this.keys.add(evt.key);
       });
 
       window.addEventListener('keyup', (evt) => {
-        this.game.level.player.dx = 0;
-        this.game.level.player.dy = 0;
+        this.keys.delete(evt.key);
       });
     }
   }

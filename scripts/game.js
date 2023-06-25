@@ -3,8 +3,9 @@ class Game {
     this.width = width;
     this.height = height;
     this.time = 0;
-    this.level = new Level();
-    this.inputHander = new InputHandler(this);
+
+    this.inputHandler = new InputHandler();
+    this.level = new Level(this);
   }
 
   update(dt) {

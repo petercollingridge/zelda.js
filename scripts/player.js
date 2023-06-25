@@ -2,13 +2,23 @@ class Player extends Sprite {
   constructor(x, y, groups) {
     super(x, y, 'img-player', groups);
 
-    this.speed = 0.2;
-    this.dx = 0;
-    this.dy = 0;
+    this.speed = 0.3;
   }
 
-  update(dt) {
-    this.x += this.dx * dt * this.speed;
-    this.y += this.dy * dt * this.speed;
+  update(dt, keys) {
+    const speed = this.speed * dt;
+
+    if (keys.has('ArrowRight')) {
+      this.x += speed;
+    } else if (keys.has('ArrowLeft')) {
+      this.x -= speed;
+    }
+
+    if (keys.has('ArrowDown')) {
+      this.y += speed;
+    } else if (keys.has('ArrowUp')) {
+      this.y -= speed;
+    }
+
   }
 }

@@ -1,5 +1,7 @@
 class Level {
-  constructor() {
+  constructor(game) {
+    this.game = game;
+
     // Sprite group setup
     this.visibleSprites = [];
     this.obstacleSprites = [];
@@ -27,7 +29,8 @@ class Level {
   }
 
   update(dt) {
-    this.player.update(dt);
+    const keys = this.game.inputHandler.keys;
+    this.player.update(dt, keys);
   }
 
   draw(ctx) {
