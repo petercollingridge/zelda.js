@@ -11,6 +11,9 @@ class Sprite {
       this.width = TILE_SIZE;
       this.height = TILE_SIZE;
     }
+
+    // Offset position since grid deterrmines base of object
+    this.y -= this.height - TILE_SIZE;
   }
 
   draw(ctx, offsetX, offsetY) {
