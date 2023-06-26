@@ -6,17 +6,17 @@ class Tile extends Sprite {
   getHitbox() {
     return {
       x1: this.x + 10,
-      y1: this.y + 10,
-      x2: this.x + TILE_SIZE - 10,
-      y2: this.y + TILE_SIZE - 10,
+      y1: this.y + this.height - TILE_SIZE + 10,
+      x2: this.x + this.width - 10,
+      y2: this.y + this.height - 10,
     };
   }
 }
 
 // Obstacle blocks have no image so have no name
 const getBlockName = () => null;
-
-const getGrasskName = (n) => `img-grass-${n}`;
+const getGrassName = (n) => `img-grass-${n}`;
+const getObjectName = (n) => `img-object-${n}`;
 
 function getTiles(tileArray, getName, groups) {
   for (let i = 0; i < tileArray.length; i++) {
@@ -26,7 +26,7 @@ function getTiles(tileArray, getName, groups) {
     for (let j = 0; j < row.length; j++) {
       const x = j * TILE_SIZE;
 
-      if (row[j] !== ' ') {
+      if (row[j] > 0) {
         const tileName = getName(row[j]);
         const tile = new Tile(x, y, tileName);
 

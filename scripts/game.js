@@ -23,7 +23,8 @@ class Game {
     this.visibleSprites.push(this.player);
     
     getTiles(BLOCK_TILES, getBlockName, [this.obstacleSprites]);
-    getTiles(GRASS_TILES, getGrasskName, [this.visibleSprites]);
+    getTiles(GRASS_TILES, getGrassName, [this.visibleSprites, this.obstacleSprites]);
+    getTiles(OBJECT_TILES, getObjectName, [this.visibleSprites, this.obstacleSprites]);
   }
 
   update(dt) {
@@ -39,7 +40,7 @@ class Game {
     ctx.clearRect(0, 0, this.width, this.height);
     ctx.drawImage(this.groundImage, this.offsetX, this.offsetY);
 
-    this.visibleSprites = this.visibleSprites.sort((a, b) => a.y - b.y);
+    this.visibleSprites = this.visibleSprites.sort((a, b) => a.y + a.height - b.y - b.height);
 
     this.visibleSprites.forEach((sprite) => {
       sprite.draw(ctx, this.offsetX, this.offsetY);
