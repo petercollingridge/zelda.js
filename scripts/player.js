@@ -4,19 +4,38 @@ class Player extends Sprite {
     this.obstacleSprites = obstacleSprites;
 
     // Graphics setup
+    this.frameCount = 0;
+    this.animationSpeed = 0.01;
     this.animations = this._getAssets();
     this.status = 'idle';
     this.direction = 'down';
 
     this.speed = 0.5;
-    this.attackCooldown = 400;
+    this.attackTime = 400;
   }
 
   update(dt, keys) {
-    if (this.status === 'attack' || this.status === 'magic') {
-      return
+    if (this.status !== 'attack' && this.status !== 'magic') {
+      this. _keyboardUpdate(dt, keys)
     }
 
+    const statusName = `${this.direction}-${this.status}`;
+    if (statusName !== this.oldStatus) {
+      this.oldStatus = statusName;
+      this.frameCount = 0;
+      this.animationImages = this.animations[statusName];
+    } else {
+      this.frameCount += dt * this.animationSpeed;
+      if (this.frameCount >= this.animationImages.length) {
+        this.frameCount = 0;
+      }
+    }
+
+    const frameIndex = Math.floor(this.frameCount);
+    this.image = this.animationImages[frameIndex];
+  }
+
+  _keyboardUpdate(dt, keys) {
     this.dx = 0;
     this.dy = 0;
     this.status = 'idle';
@@ -45,17 +64,15 @@ class Player extends Sprite {
     // Attack
     if (keys.has(' ')) {
       console.log('Attack');
-      this.attacking = true;
       this.status = 'attack';
-      setTimeout(()=> (this.status = 'idle'), this.attackCooldown);
+      setTimeout(()=> (this.status = 'idle'), this.attackTime);
     }
 
     // Magic
     if (keys.has('Control')) {
       console.log('Magic');
-      this.attacking = true;
-      this.status = 'magic';
-      setTimeout(()=> (this.status = 'idle'), this.attackCooldown);
+      this.status = 'attack';
+      setTimeout(()=> (this.status = 'idle'), this.attackTime);
     }
 
     this._move(this.dx, this.dy, dt);
