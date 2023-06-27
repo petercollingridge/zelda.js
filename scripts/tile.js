@@ -5,9 +5,9 @@ class Tile extends Sprite {
 
   getHitbox() {
     return {
-      x1: this.x + 10,
+      x1: this.x + 12,
       y1: this.y + this.height - TILE_SIZE + 10,
-      x2: this.x + this.width - 10,
+      x2: this.x + this.width - 12,
       y2: this.y + this.height - 10,
     };
   }

@@ -45,7 +45,8 @@ class Game {
     this.visibleSprites.forEach((sprite) => {
       sprite.draw(ctx, this.offsetX, this.offsetY);
     });
-    // this.debug(ctx);
+
+    this.debug(ctx);
   }
 
   _updateCamera() {
@@ -55,10 +56,7 @@ class Game {
 
   debug(ctx) {
     ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, this.width, this.height);
-
-    ctx.fillStyle = '#f8f8f8';
-    ctx.font = "12px Georgia";
-    ctx.fillText(Math.round(this.time), 20, 20);
+    ctx.font = "16px Georgia";
+    ctx.fillText(this.player.status, 20, 20);
   }
 }
