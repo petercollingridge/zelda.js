@@ -1,9 +1,21 @@
 const WIDTH = 1280;
-const HEIGHT = 720;
+const HEIGHT = 600;
 
 const FPS = 60;
 const SPRITE_SIZE = 64;
 const TILE_SIZE = 64;
+
+const WEAPON_DATA = {
+	sword: { cooldown: 100, damage: 15 },
+	lance: { cooldown: 400, damage: 30 },
+	axe: { cooldown: 300, damage: 20 },
+	rapier: { cooldown: 50, damage: 8 },
+	sai: { cooldown: 80, damage: 10 }
+};
+
+Object.entries(WEAPON_DATA).forEach(([name, data]) => {
+  data.image = document.getElementById(`img-weapon-${name}-full`);
+});
 
 const BLOCK_TILES = [
   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
