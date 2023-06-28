@@ -19,7 +19,7 @@ class Game {
   _createMap() {
     this.groundImage = document.getElementById('img-ground');
 
-    this.player = new Player(2000, 1450, this);
+    this.player = new Player(1950, 1350, this);
     this.visibleSprites.push(this.player);
     
     getTiles(BLOCK_TILES, getBlockName, [this.obstacleSprites]);

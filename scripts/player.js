@@ -12,11 +12,13 @@ class Player extends Sprite {
     this.status = 'idle';
     this.direction = 'down';
 
-    this.weapon = 'sword';
+    this.weaponIndex = 0;
     this.weaponSprite = false;
     this.speed = 0.5;
     this.attackTime = 400;
+
     this.attackComplete = true;
+    this.switchComplete = true;
   }
 
   update(dt) {
@@ -92,6 +94,16 @@ class Player extends Sprite {
       keysUp.delete(' ');
     }
 
+    // Switch weapon
+    if (keysDown.has('q') && this.switchComplete) {
+      this.switchComplete = false;
+      this.weaponIndex = (this.weaponIndex + 1) % WEAPONS.length;
+    } else if (keysUp.has('q')) {
+      // Need to release attack button to complete attack and allow another attack 
+      this.switchComplete = true;
+      keysUp.delete('q');
+    }
+
     // Magic
     if (keysDown.has('Control')) {
       console.log('Magic');
@@ -120,7 +132,8 @@ class Player extends Sprite {
     setTimeout(()=> (this.status = 'idle'), this.attackTime);
 
     // Get weapon image
-    const spriteName = `img-weapon-${this.weapon}-${this.direction}`;
+    const weapon = WEAPONS[this.weaponIndex];
+    const spriteName = `img-weapon-${weapon.name}-${this.direction}`;
     this.weaponSprite = new Sprite(this.x, this.y, spriteName);
 
     // Position weapon
