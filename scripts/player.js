@@ -15,7 +15,6 @@ class Player extends Sprite {
     this.weaponIndex = 0;
     this.weaponSprite = false;
     this.speed = 0.5;
-    this.attackTime = 400;
 
     this.attackComplete = true;
     this.switchComplete = true;
@@ -128,8 +127,9 @@ class Player extends Sprite {
 
     this.status = 'attack';
     this.attackComplete = false;
+    const attackTime = WEAPONS[this.weaponIndex].cooldown;
 
-    setTimeout(()=> (this.status = 'idle'), this.attackTime);
+    setTimeout(()=> (this.status = 'idle'), attackTime);
 
     // Get weapon image
     const weapon = WEAPONS[this.weaponIndex];
@@ -139,17 +139,16 @@ class Player extends Sprite {
     // Position weapon
     if (this.direction === 'left') {
       this.weaponSprite.x -= this.weaponSprite.width;
-      this.weaponSprite.y -= 4;
+      this.weaponSprite.y += (this.height + 32 - this.weaponSprite.height) / 2;
     } else if (this.direction === 'right') {
       this.weaponSprite.x += this.width;
-      this.weaponSprite.y -= 4;
+      this.weaponSprite.y += (this.height + 32 - this.weaponSprite.height) / 2;
     } else if (this.direction === 'up') {
-      this.weaponSprite.x += this.width - this.weaponSprite.width - 6;
-      this.weaponSprite.y -= this.weaponSprite.height;
+      this.weaponSprite.x += (this.width - this.weaponSprite.width) / 2 + 12;
+      this.weaponSprite.y += 16 - this.weaponSprite.height;
     } else if (this.direction === 'down') {
-      // this.weaponSprite.x += (this.width - this.weaponSprite.width) / 2;
-      this.weaponSprite.x += 6;
-      this.weaponSprite.y += this.height / 2 + 12;
+      this.weaponSprite.x += 24 - this.weaponSprite.width / 2;
+      this.weaponSprite.y += this.height;
     }
   }
 

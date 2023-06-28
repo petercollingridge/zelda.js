@@ -1,5 +1,5 @@
 class Sprite {
-  constructor(x, y, imageName) {
+  constructor(x, y, imageName, offset) {
     this.x = x;
     this.y = y;
 
@@ -13,7 +13,9 @@ class Sprite {
     }
 
     // Offset position since grid deterrmines base of object
-    this.y -= this.height - TILE_SIZE;
+    if (offset) {
+      this.y -= this.height - TILE_SIZE;
+    }
   }
 
   draw(ctx, offsetX, offsetY) {

@@ -24,7 +24,7 @@ class Game {
     
     getTiles(BLOCK_TILES, getBlockName, [this.obstacleSprites]);
     getTiles(GRASS_TILES, getGrassName, [this.visibleSprites, this.obstacleSprites]);
-    getTiles(OBJECT_TILES, getObjectName, [this.visibleSprites, this.obstacleSprites]);
+    getTiles(OBJECT_TILES, getObjectName, [this.visibleSprites, this.obstacleSprites], true);
   }
 
   update(dt) {
