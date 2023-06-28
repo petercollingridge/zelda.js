@@ -19,7 +19,7 @@ class Game {
   _createMap() {
     this.groundImage = document.getElementById('img-ground');
 
-    this.player = new Player(2000, 1450, this.obstacleSprites);
+    this.player = new Player(2000, 1450, this);
     this.visibleSprites.push(this.player);
     
     getTiles(BLOCK_TILES, getBlockName, [this.obstacleSprites]);
@@ -29,10 +29,7 @@ class Game {
 
   update(dt) {
     this.time += dt;
-
-    const keys = this.inputHandler.keys;
-    this.player.update(dt, keys);
-
+    this.player.update(dt);
     this._updateCamera();
   }
 

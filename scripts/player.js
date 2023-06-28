@@ -1,7 +1,9 @@
 class Player extends Sprite {
-  constructor(x, y, obstacleSprites) {
+  constructor(x, y, game) {
     super(x, y, 'img-player');
-    this.obstacleSprites = obstacleSprites;
+    this.game = game;
+    this.inputHandler = game.inputHandler;
+    this.obstacleSprites = game.obstacleSprites;
 
     // Graphics setup
     this.frameCount = 0;
@@ -10,15 +12,19 @@ class Player extends Sprite {
     this.status = 'idle';
     this.direction = 'down';
 
+    this.weapon = 'sword';
+    this.weaponSprite = false;
     this.speed = 0.5;
     this.attackTime = 400;
+    this.attackComplete = true;
   }
 
-  update(dt, keys) {
+  update(dt) {
     if (this.status !== 'attack' && this.status !== 'magic') {
-      this. _keyboardUpdate(dt, keys)
+      this. _keyboardUpdate(dt)
     }
 
+    // Update animation
     const statusName = `${this.direction}-${this.status}`;
     if (statusName !== this.oldStatus) {
       this.oldStatus = statusName;
@@ -35,41 +41,59 @@ class Player extends Sprite {
     this.image = this.animationImages[frameIndex];
   }
 
-  _keyboardUpdate(dt, keys) {
+  draw(ctx, offsetX, offsetY) {
+    super.draw(ctx, offsetX, offsetY);
+    if (this.status === 'attack') {
+      this.weaponSprite.draw(ctx, offsetX, offsetY);
+
+      // Draw self again over the top of the weapon
+      if (this.direction === 'up') {
+        super.draw(ctx, offsetX, offsetY);
+      }
+    }
+  }
+
+  _keyboardUpdate(dt) {
+    const keysDown = this.inputHandler.keysDown;
+    const keysUp = this.inputHandler.keysUp;
+
     this.dx = 0;
     this.dy = 0;
     this.status = 'idle';
 
     // Movement
-    if (keys.has('ArrowRight')) {
+    if (keysDown.has('ArrowRight')) {
       this.dx = 1;
       this.direction = 'right';
       this.status = 'move';
-    } else if (keys.has('ArrowLeft')) {
+    } else if (keysDown.has('ArrowLeft')) {
       this.dx = -1;
       this.direction = 'left';
       this.status = 'move';
     }
 
-    if (keys.has('ArrowDown')) {
+    if (keysDown.has('ArrowDown')) {
       this.dy = 1;
       this.direction = 'down';
       this.status = 'move';
-    } else if (keys.has('ArrowUp')) {
+    } else if (keysDown.has('ArrowUp')) {
       this.dy = -1;
       this.direction = 'up';
       this.status = 'move';
     }
 
+
     // Attack
-    if (keys.has(' ')) {
-      console.log('Attack');
-      this.status = 'attack';
-      setTimeout(()=> (this.status = 'idle'), this.attackTime);
+    if (keysDown.has(' ') && this.attackComplete) {
+      this._attack();
+    } else if (keysUp.has(' ')) {
+      // Need to release attack button to complete attack and allow another attack 
+      this.attackComplete = true;
+      keysUp.delete(' ');
     }
 
     // Magic
-    if (keys.has('Control')) {
+    if (keysDown.has('Control')) {
       console.log('Magic');
       this.status = 'attack';
       setTimeout(()=> (this.status = 'idle'), this.attackTime);
@@ -85,6 +109,35 @@ class Player extends Sprite {
       x2: this.x + TILE_SIZE,
       y2: this.y + TILE_SIZE - 12,
     };
+  }
+
+  _attack() {
+    console.log('Attack');
+
+    this.status = 'attack';
+    this.attackComplete = false;
+
+    setTimeout(()=> (this.status = 'idle'), this.attackTime);
+
+    // Get weapon image
+    const spriteName = `img-weapon-${this.weapon}-${this.direction}`;
+    this.weaponSprite = new Sprite(this.x, this.y, spriteName);
+
+    // Position weapon
+    if (this.direction === 'left') {
+      this.weaponSprite.x -= this.weaponSprite.width;
+      this.weaponSprite.y -= 4;
+    } else if (this.direction === 'right') {
+      this.weaponSprite.x += this.width;
+      this.weaponSprite.y -= 4;
+    } else if (this.direction === 'up') {
+      this.weaponSprite.x += this.width - this.weaponSprite.width - 6;
+      this.weaponSprite.y -= this.weaponSprite.height;
+    } else if (this.direction === 'down') {
+      // this.weaponSprite.x += (this.width - this.weaponSprite.width) / 2;
+      this.weaponSprite.x += 6;
+      this.weaponSprite.y += this.height / 2 + 12;
+    }
   }
 
   _getAssets() {

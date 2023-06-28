@@ -1,13 +1,15 @@
   class InputHandler {
     constructor() {
-      this.keys = new Set();
+      this.keysDown = new Set();
+      this.keysUp = new Set();
 
       window.addEventListener('keydown', (evt) => {
-        this.keys.add(evt.key);
+        this.keysDown.add(evt.key);
       });
 
       window.addEventListener('keyup', (evt) => {
-        this.keys.delete(evt.key);
+        this.keysUp.add(evt.key);
+        this.keysDown.delete(evt.key);
       });
     }
   }
