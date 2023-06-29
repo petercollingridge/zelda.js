@@ -7,6 +7,7 @@ class Game {
     this.offsetY = 0;
 
     this.inputHandler = new InputHandler();
+    this.ui = new UI(width, height);
 
     // Sprite group setup
     this.visibleSprites = [];
@@ -43,6 +44,8 @@ class Game {
       sprite.draw(ctx, this.offsetX, this.offsetY);
     });
 
+    this.ui.draw(ctx, this.player);
+
     this.debug(ctx);
   }
 
@@ -54,6 +57,6 @@ class Game {
   debug(ctx) {
     ctx.fillStyle = '#000';
     ctx.font = "16px Georgia";
-    ctx.fillText(this.player.status, 20, 20);
+    ctx.fillText(this.player.status, this.width / 2, this.height - 20);
   }
 }
