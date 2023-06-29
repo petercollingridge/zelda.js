@@ -13,3 +13,62 @@
       });
     }
   }
+
+  const playerActions = [
+    {
+      key: 'ArrowRight',
+      action: (player) => {
+        player.dx = 1;
+        player.direction = 'right';
+        player.status = 'move';
+      }
+    },
+    {
+      key: 'ArrowLeft',
+      action: (player) => {
+        player.dx = -1;
+        player.direction = 'left';
+        player.status = 'move';
+      }
+    },
+    {
+      key: 'ArrowDown',
+      action: (player) => {
+        player.dy = 1;
+        player.direction = 'down';
+        player.status = 'move';
+      }
+    },
+    {
+      key: 'ArrowUp',
+      action: (player) => {
+        player.dy = -1;
+        player.direction = 'up';
+        player.status = 'move';
+      }
+    },
+    // Attack
+    {
+      key: ' ',
+      singlePress: true,
+      action: (player) => player._attack(),
+    },
+    // Switch weapon
+    {
+      key: 'q',
+      singlePress: true,
+      action: (player) => {
+        player.weaponIndex = (player.weaponIndex + 1) % WEAPONS.length;
+      },
+    },
+    // Magic
+    {
+      key: 'Control',
+      singlePress: true,
+      action: (player) => {
+        console.log('Magic');
+        player.status = 'attack';
+        setTimeout(()=> (player.status = 'idle'), player.attackTime);
+      }
+    }
+  ];
