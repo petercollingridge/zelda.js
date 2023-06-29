@@ -12,12 +12,20 @@ class Player extends Sprite {
     this.status = 'idle';
     this.direction = 'down';
 
+    // Player stats
+    this.health = 60;
+    this.maxHealth = 100;
+    this.energy = 60;
+    this.maxEnergy = 60;
+    this.attack = 5;
+    this.magic = 4;
+    this.speed = 5;
+    this.xp = 12;
+
     this.weaponIndex = 0;
     this.weaponSprite = false;
-    this.speed = 0.5;
 
-    this.attackComplete = true;
-    this.switchComplete = true;
+    this.magicIndex = 0;
   }
 
   update(dt) {
@@ -54,6 +62,7 @@ class Player extends Sprite {
     }
   }
 
+  // TODO: generalise how keyboard input works
   _keyboardUpdate(dt) {
     const keysDown = this.inputHandler.keysDown;
     const keysUp = this.inputHandler.keysUp;
@@ -62,55 +71,24 @@ class Player extends Sprite {
     this.dy = 0;
     this.status = 'idle';
 
-    // Movement
-    if (keysDown.has('ArrowRight')) {
-      this.dx = 1;
-      this.direction = 'right';
-      this.status = 'move';
-    } else if (keysDown.has('ArrowLeft')) {
-      this.dx = -1;
-      this.direction = 'left';
-      this.status = 'move';
+    playerActions.forEach((action) => {
+      if (action.singlePress) {
+        if (keysDown.has(action.key) && !action.inProgress) {
+          action.inProgress = true;
+          action.action(this);
+        } else if (keysUp.has(action.key)) {
+          // Action only ends when key is released
+          action.inProgress = false;
+          keysUp.delete(action.key);
+        }
+      } else if (keysDown.has(action.key)) {
+        action.action(this);
+      }
+    });
+
+    if (this.status === 'move') {
+      this._move(this.dx, this.dy, dt);
     }
-
-    if (keysDown.has('ArrowDown')) {
-      this.dy = 1;
-      this.direction = 'down';
-      this.status = 'move';
-    } else if (keysDown.has('ArrowUp')) {
-      this.dy = -1;
-      this.direction = 'up';
-      this.status = 'move';
-    }
-
-
-    // Attack
-    if (keysDown.has(' ') && this.attackComplete) {
-      this._attack();
-    } else if (keysUp.has(' ')) {
-      // Need to release attack button to complete attack and allow another attack 
-      this.attackComplete = true;
-      keysUp.delete(' ');
-    }
-
-    // Switch weapon
-    if (keysDown.has('q') && this.switchComplete) {
-      this.switchComplete = false;
-      this.weaponIndex = (this.weaponIndex + 1) % WEAPONS.length;
-    } else if (keysUp.has('q')) {
-      // Need to release attack button to complete attack and allow another attack 
-      this.switchComplete = true;
-      keysUp.delete('q');
-    }
-
-    // Magic
-    if (keysDown.has('Control')) {
-      console.log('Magic');
-      this.status = 'attack';
-      setTimeout(()=> (this.status = 'idle'), this.attackTime);
-    }
-
-    this._move(this.dx, this.dy, dt);
   }
 
   getHitbox() {
@@ -123,10 +101,7 @@ class Player extends Sprite {
   }
 
   _attack() {
-    console.log('Attack');
-
     this.status = 'attack';
-    this.attackComplete = false;
     const attackTime = WEAPONS[this.weaponIndex].cooldown;
 
     setTimeout(()=> (this.status = 'idle'), attackTime);
@@ -178,16 +153,19 @@ class Player extends Sprite {
   }
 
   _move(dx, dy, dt) {
-    let speed = this.speed * dt;
+    let speed = dt * this.speed * 0.1;
     if (dx && dy) {
       // Moving diagonally, so normalise
       speed *= Math.SQRT1_2; 
     }
 
-    this.x += dx * speed;
-    this._collide('horizontal');
-    this.y += dy * speed;
-    this._collide('vertical');
+    if (dx) {
+      this.x += dx * speed;
+      this._collide('horizontal');
+    } else if (dy) {
+      this.y += dy * speed;
+      this._collide('vertical');
+    }
   }
 
   _collide(direction) {
@@ -220,3 +198,62 @@ class Player extends Sprite {
     }
   }
 }
+
+const playerActions = [
+  {
+    key: 'ArrowRight',
+    action: (player) => {
+      player.dx = 1;
+      player.direction = 'right';
+      player.status = 'move';
+    }
+  },
+  {
+    key: 'ArrowLeft',
+    action: (player) => {
+      player.dx = -1;
+      player.direction = 'left';
+      player.status = 'move';
+    }
+  },
+  {
+    key: 'ArrowDown',
+    action: (player) => {
+      player.dy = 1;
+      player.direction = 'down';
+      player.status = 'move';
+    }
+  },
+  {
+    key: 'ArrowUp',
+    action: (player) => {
+      player.dy = -1;
+      player.direction = 'up';
+      player.status = 'move';
+    }
+  },
+  // Attack
+  {
+    key: ' ',
+    singlePress: true,
+    action: (player) => player._attack(),
+  },
+  // Switch weapon
+  {
+    key: 'q',
+    singlePress: true,
+    action: (player) => {
+      player.weaponIndex = (player.weaponIndex + 1) % WEAPONS.length;
+    },
+  },
+  // Magic
+  {
+    key: 'Control',
+    singlePress: true,
+    action: (player) => {
+      console.log('Magic');
+      this.status = 'attack';
+      setTimeout(()=> (this.status = 'idle'), this.attackTime);
+    }
+  }
+];
