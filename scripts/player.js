@@ -162,7 +162,8 @@ class Player extends Sprite {
     if (dx) {
       this.x += dx * speed;
       this._collide('horizontal');
-    } else if (dy) {
+    }
+    if (dy) {
       this.y += dy * speed;
       this._collide('vertical');
     }
