@@ -22,14 +22,23 @@ class Player extends Sprite {
     this.speed = 5;
     this.xp = 12;
 
+    this.cooldown = 0;
+
     this.weaponIndex = 0;
     this.weaponSprite = false;
 
     this.magicIndex = 0;
+    this.magicCooldown = 300;
   }
 
   update(dt) {
-    if (this.status !== 'attack' && this.status !== 'magic') {
+    if (this.status === 'attack' || this.status === 'magic') {
+      this.cooldown -= dt;
+      if (this.cooldown <= 0) {
+        this.cooldown = 0;
+        this.status = 'idle';
+      }
+    } else {
       this._keyboardUpdate(dt)
     }
 
@@ -102,9 +111,8 @@ class Player extends Sprite {
 
   _attack() {
     this.status = 'attack';
-    const attackTime = WEAPONS[this.weaponIndex].cooldown;
-
-    setTimeout(()=> (this.status = 'idle'), attackTime);
+    this.cooldown = WEAPONS[this.weaponIndex].cooldown;
+    this.maxCooldown = this.cooldown;
 
     // Get weapon image
     const weapon = WEAPONS[this.weaponIndex];

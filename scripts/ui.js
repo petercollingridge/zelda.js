@@ -18,11 +18,11 @@ class UI {
 
     let x = this.x;
     y = this.height - ITEM_BOX_SIZE - 20;
-    this._displayItem(ctx, x, y, WEAPONS[player.weaponIndex]);
+    this._displayItem(ctx, player, x, y, WEAPONS[player.weaponIndex], 'attack');
 
     x += ITEM_BOX_SIZE - 15;
     y += 10;
-    this._displayItem(ctx, x, y, MAGIC[player.magicIndex]);
+    this._displayItem(ctx, player, x, y, MAGIC[player.magicIndex], 'magic');
   }
 
   _displayBar(ctx, value, maxValue, y, width, colour) {
@@ -38,7 +38,7 @@ class UI {
     ctx.strokeRect(this.x, y, width, BAR_HEIGHT);
   }
 
-  _displayItem(ctx, x, y, item) {
+  _displayItem(ctx, player, x, y, item, type) {
     ctx.fillStyle = UI_BG_COLOR;
     ctx.fillRect(x, y, ITEM_BOX_SIZE, ITEM_BOX_SIZE);
     ctx.lineWidth = 3;
@@ -56,6 +56,13 @@ class UI {
     ctx.textBaseline = "alphabetic";
     ctx.fillStyle = TEXT_COLOR;
     ctx.fillText(item.strength, x + 5, y + ITEM_BOX_SIZE - 5);
+
+    if (player.status === type) {
+      const height = ITEM_BOX_SIZE * player.cooldown / player.maxCooldown;
+      const y2 = y + ITEM_BOX_SIZE - height;
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+      ctx.fillRect(x, y2, ITEM_BOX_SIZE, height);
+    }
   }
 
   _displayXP(ctx, xp) {

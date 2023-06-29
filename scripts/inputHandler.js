@@ -68,7 +68,7 @@
       action: (player) => {
         console.log('Magic');
         player.status = 'attack';
-        setTimeout(()=> (player.status = 'idle'), player.attackTime);
+        palyer.cooldown = player.magicCooldown;
       }
     },
     // Switch magic
