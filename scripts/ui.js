@@ -15,7 +15,14 @@ class UI {
     this._displayBar(ctx, player.energy, player.maxEnergy, y, ENERGY_BAR_WIDTH, ENERGY_COLOR);
 
     this._displayXP(ctx, player.xp);
-    this._displayWeapon(ctx, player.weaponIndex);
+
+    let x = this.x;
+    y = this.height - ITEM_BOX_SIZE - 20;
+    this._displayItem(ctx, x, y, WEAPONS[player.weaponIndex]);
+
+    x += ITEM_BOX_SIZE - 15;
+    y += 10;
+    this._displayItem(ctx, x, y, MAGIC[player.magicIndex]);
   }
 
   _displayBar(ctx, value, maxValue, y, width, colour) {
@@ -31,20 +38,15 @@ class UI {
     ctx.strokeRect(this.x, y, width, BAR_HEIGHT);
   }
 
-  _displayWeapon(ctx, weaponIndex) {
-    const x = this.x;
-    const y = this.height - this.y - ITEM_BOX_SIZE;
-
+  _displayItem(ctx, x, y, item) {
     ctx.fillStyle = UI_BG_COLOR;
-    ctx.fillRect(this.x, y, ITEM_BOX_SIZE, ITEM_BOX_SIZE);
+    ctx.fillRect(x, y, ITEM_BOX_SIZE, ITEM_BOX_SIZE);
     ctx.lineWidth = 3;
     ctx.strokeStyle = UI_BORDER_COLOR;
-    ctx.strokeRect(this.x, y, ITEM_BOX_SIZE, ITEM_BOX_SIZE);
-
-    const weapon = WEAPONS[weaponIndex];
-    const image = weapon.image;
+    ctx.strokeRect(x, y, ITEM_BOX_SIZE, ITEM_BOX_SIZE);
 
     // Centre image
+    const image = item.image;
     const imageX = x + (ITEM_BOX_SIZE - image.width) / 2;
     const imageY = y + (ITEM_BOX_SIZE - image.height) / 2;
     ctx.drawImage(image, imageX, imageY);
@@ -53,7 +55,7 @@ class UI {
     ctx.font = "14px Georgia";
     ctx.textBaseline = "alphabetic";
     ctx.fillStyle = TEXT_COLOR;
-    ctx.fillText(weapon.damage, x + 5, y + ITEM_BOX_SIZE - 5);
+    ctx.fillText(item.strength, x + 5, y + ITEM_BOX_SIZE - 5);
   }
 
   _displayXP(ctx, xp) {

@@ -30,7 +30,7 @@ class Player extends Sprite {
 
   update(dt) {
     if (this.status !== 'attack' && this.status !== 'magic') {
-      this. _keyboardUpdate(dt)
+      this._keyboardUpdate(dt)
     }
 
     // Update animation

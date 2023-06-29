@@ -70,5 +70,13 @@
         player.status = 'attack';
         setTimeout(()=> (player.status = 'idle'), player.attackTime);
       }
-    }
+    },
+    // Switch magic
+    {
+      key: 'e',
+      singlePress: true,
+      action: (player) => {
+        player.magicIndex = (player.magicIndex + 1) % MAGIC.length;
+      },
+    },
   ];

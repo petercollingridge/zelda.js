@@ -13,11 +13,11 @@ const ITEM_BOX_SIZE = 80;
 const UI_FONT_SIZE = 20;
 
 // UI colors
-UI_BG_COLOR = '#222'
-UI_BORDER_COLOR = '#111'
-HEALTH_COLOR = 'red'
-ENERGY_COLOR = 'blue'
-UI_BORDER_COLOR_ACTIVE = 'gold'
+UI_BG_COLOR = '#22262f';
+UI_BORDER_COLOR = '#0a0a0a';
+HEALTH_COLOR = 'red';
+ENERGY_COLOR = 'blue';
+UI_BORDER_COLOR_ACTIVE = 'gold';
 
 // General colors
 WATER_COLOR = '#71ddee'
@@ -25,11 +25,11 @@ TEXT_COLOR = '#EEE'
 
 
 const WEAPONS = [
-	{ name: 'sword', cooldown: 100, damage: 15 },
-	{ name: 'lance', cooldown: 400, damage: 30 },
-	{ name: 'axe', cooldown: 300, damage: 20 },
-	{ name: 'rapier', cooldown: 50, damage: 8 },
-	{ name: 'sai', cooldown: 80, damage: 10 }
+	{ name: 'sword', cooldown: 100, strength: 15 },
+	{ name: 'lance', cooldown: 400, strength: 30 },
+	{ name: 'axe', cooldown: 300, strength: 20 },
+	{ name: 'rapier', cooldown: 50, strength: 8 },
+	{ name: 'sai', cooldown: 80, strength: 10 }
 ];
 
 WEAPONS.forEach((weapon) => {
@@ -37,8 +37,8 @@ WEAPONS.forEach((weapon) => {
 });
 
 const MAGIC = [
-  { name: 'flame', strength: 5, cost: 20 },
-  { name: 'heal', strength: 20, cost: 10 },
+  { name: 'flame', cost: 20, strength: 5 },
+  { name: 'heal', cost: 10, strength: 20 },
 ];
 
 MAGIC.forEach((magic) => {
