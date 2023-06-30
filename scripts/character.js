@@ -12,6 +12,8 @@ class Character extends Sprite {
     this.frameCount = 0;
     this.animationSpeed = 0.01;
     this.animations = this._getAssets(imageName);
+
+    this._updateAnimation(0);
   }
 
   update(dt) {
@@ -28,14 +30,16 @@ class Character extends Sprite {
       }
     }
 
-    // Update animation
-    const statusName = `${this.status}-${this.direction}`;
+    this._updateAnimation(dt);
+  }
 
-    if (statusName !== this.oldStatus) {
+  _updateAnimation(dt) {
+    const animationName = this._getAnimationName();
 
-      this.oldStatus = statusName;
+    if (animationName !== this.currentAnimation) {
+      this.currentAnimation = animationName;
       this.frameCount = 0;
-      this.animationImages = this.animations[statusName];
+      this.animationImages = this.animations[animationName];
     } else {
       this.frameCount += dt * this.animationSpeed;
       if (this.frameCount >= this.animationImages.length) {
@@ -67,10 +71,13 @@ class Character extends Sprite {
       } else {
         animations[animationName] = [image];
       }
-
     }
 
     return animations;
+  }
+
+  _getAnimationName() {
+    return this.status;
   }
 
   _getMove(dt) {

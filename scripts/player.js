@@ -31,6 +31,10 @@ class Player extends Character {
     }
   }
 
+  _getAnimationName() {
+    return `${this.status}-${this.direction}`;
+  }
+
   _getMove(dt) {
     const keysDown = this.inputHandler.keysDown;
     const keysUp = this.inputHandler.keysUp;
