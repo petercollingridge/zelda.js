@@ -19,15 +19,12 @@ class Game {
 
   _createMap() {
     this.groundImage = document.getElementById('img-ground');
-
-    this.player = new Player(this, 1950, 1350);
-    this.enemies = [
-      new Enemy(this, 2100, 1420, 'bamboo')
-    ];
+    this.enemies = [];
     
-    getTiles(BLOCK_TILES, getBlockName, [this.obstacleSprites]);
-    getTiles(GRASS_TILES, getGrassName, [this.visibleSprites, this.obstacleSprites]);
-    getTiles(OBJECT_TILES, getObjectName, [this.visibleSprites, this.obstacleSprites], true);
+    getTiles(this, BLOCK_TILES, getBlockTile, [this.obstacleSprites]);
+    getTiles(this, CHARACTER_TILES, getCharacterTile, [this.visibleSprites]);
+    getTiles(this, GRASS_TILES, getGrassTile, [this.visibleSprites, this.obstacleSprites]);
+    getTiles(this, OBJECT_TILES, getObjectTile, [this.visibleSprites, this.obstacleSprites]);
   }
 
   update(dt) {

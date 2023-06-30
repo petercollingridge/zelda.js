@@ -14,11 +14,28 @@ class Tile extends Sprite {
 }
 
 // Obstacle blocks have no image so have no name
-const getBlockName = () => null;
-const getGrassName = (n) => `img-grass-${n}`;
-const getObjectName = (n) => `img-object-${n}`;
+const getBlockTile = (x, y) => new Tile(x, y);
 
-function getTiles(tileArray, getName, groups) {
+const getGrassTile = (x, y, n) => new Tile(x, y, `img-grass-${n}`);
+
+const getObjectTile = (x, y, n) => new Tile(x, y, `img-object-${n}`);
+
+const getCharacterTile = (x, y, n, game) => {
+  if (n === 1) {
+    game.player = new Player(game, x, y);
+    return game.player;
+  } else {
+    const name = [,, 'bamboo', 'spirit', 'raccoon', 'squid'][n];
+
+    if (name) {
+      const enemy = new Enemy(game, x, y, name);
+      game.enemies.push(enemy);
+      return enemy
+    }
+  }
+}
+
+function getTiles(game, tileArray, getTile, groups) {
   for (let i = 0; i < tileArray.length; i++) {
     const row = tileArray[i];
     const y = i * TILE_SIZE;
@@ -27,10 +44,10 @@ function getTiles(tileArray, getName, groups) {
       const x = j * TILE_SIZE;
 
       if (row[j] > 0) {
-        const tileName = getName(row[j]);
-        const tile = new Tile(x, y, tileName);
-
-        groups.forEach(group => group.push(tile));
+        const tile = getTile(x, y, row[j], game);
+        if (tile) {
+          groups.forEach(group => group.push(tile));
+        }
       }
     }
   }

@@ -4,13 +4,12 @@ class Character extends Sprite {
     this.game = game;
     this.inputHandler = game.inputHandler;
     this.obstacleSprites = game.obstacleSprites;
-    game.visibleSprites.push(this);
 
     // Graphics setup
     this.status = 'idle';
     this.direction = 'down';
     this.frameCount = 0;
-    this.animationSpeed = 0.01;
+    this.animationSpeed = 0.008;
     this.animations = this._getAssets(imageName);
 
     this._updateAnimation(0);
