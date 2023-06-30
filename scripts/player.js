@@ -1,17 +1,6 @@
-class Player extends Sprite {
-  constructor(x, y, game) {
-    super(x, y, 'img-player');
-    this.game = game;
-    this.inputHandler = game.inputHandler;
-    this.obstacleSprites = game.obstacleSprites;
-
-    // Graphics setup
-    this.frameCount = 0;
-    this.animationSpeed = 0.01;
-    this.animations = this._getAssets();
-    this.status = 'idle';
-    this.direction = 'down';
-
+class Player extends Character {
+  constructor(game, x, y) {
+    super(game, x, y, 'img-player');
     // Player stats
     this.health = 60;
     this.maxHealth = 100;
@@ -23,40 +12,11 @@ class Player extends Sprite {
     this.xp = 12;
 
     this.cooldown = 0;
-
     this.weaponIndex = 0;
     this.weaponSprite = false;
 
     this.magicIndex = 0;
     this.magicCooldown = 300;
-  }
-
-  update(dt) {
-    if (this.status === 'attack' || this.status === 'magic') {
-      this.cooldown -= dt;
-      if (this.cooldown <= 0) {
-        this.cooldown = 0;
-        this.status = 'idle';
-      }
-    } else {
-      this._keyboardUpdate(dt)
-    }
-
-    // Update animation
-    const statusName = `${this.direction}-${this.status}`;
-    if (statusName !== this.oldStatus) {
-      this.oldStatus = statusName;
-      this.frameCount = 0;
-      this.animationImages = this.animations[statusName];
-    } else {
-      this.frameCount += dt * this.animationSpeed;
-      if (this.frameCount >= this.animationImages.length) {
-        this.frameCount = 0;
-      }
-    }
-
-    const frameIndex = Math.floor(this.frameCount);
-    this.image = this.animationImages[frameIndex];
   }
 
   draw(ctx, offsetX, offsetY) {
@@ -71,8 +31,7 @@ class Player extends Sprite {
     }
   }
 
-  // TODO: generalise how keyboard input works
-  _keyboardUpdate(dt) {
+  _getMove(dt) {
     const keysDown = this.inputHandler.keysDown;
     const keysUp = this.inputHandler.keysUp;
 
@@ -132,78 +91,6 @@ class Player extends Sprite {
     } else if (this.direction === 'down') {
       this.weaponSprite.x += 24 - this.weaponSprite.width / 2;
       this.weaponSprite.y += this.height;
-    }
-  }
-
-  _getAssets() {
-    const dirs = ['up', 'down', 'left', 'right'];
-    const types = ['', 'idle', 'attack'];
-    const animations = {};
-
-    dirs.forEach((dir) =>{
-      types.forEach((type) => {
-        if (!type) {
-          const images = [];
-          for (let i = 0; i < 4; i++) {
-            const imageName = `img-player-${dir}-${i}`;
-            images.push(document.getElementById(imageName));
-          }
-          animations[dir + '-move'] = images;
-        } else {
-          const name = `${dir}-${type}`;
-          const imageName = `img-player-${name}`;
-          animations[name] = [document.getElementById(imageName)];
-        }
-      })
-    });
-
-    return animations;
-  }
-
-  _move(dx, dy, dt) {
-    let speed = dt * this.speed * 0.1;
-    if (dx && dy) {
-      // Moving diagonally, so normalise
-      speed *= Math.SQRT1_2; 
-    }
-
-    if (dx) {
-      this.x += dx * speed;
-      this._collide('horizontal');
-    }
-    if (dy) {
-      this.y += dy * speed;
-      this._collide('vertical');
-    }
-  }
-
-  _collide(direction) {
-    let hitbox = this.getHitbox();
-
-    if (direction === 'horizontal') {
-      this.obstacleSprites.forEach((sprite) => {
-        const hitbox2 = sprite.getHitbox();
-        if (collision(hitbox, hitbox2)) {
-          if (this.dx > 0) {  // Moving right
-            this.x += hitbox2.x1 - hitbox.x2;
-          } else if (this.dx < 0) {  // Moving left
-            this.x += hitbox2.x2 - hitbox.x1;
-          }
-          hitbox = this.getHitbox();
-        }
-      });
-    } else if (direction === 'vertical') {
-      this.obstacleSprites.forEach((sprite) => {
-        const hitbox2 = sprite.getHitbox();
-        if (collision(hitbox, hitbox2)) {
-          if (this.dy > 0) {  // Moving down
-            this.y += hitbox2.y1 - hitbox.y2;
-          } else if (this.dy < 0) {  // Moving up
-            this.y += hitbox2.y2 - hitbox.y1;
-          }
-          hitbox = this.getHitbox();
-        }
-      });
     }
   }
 }

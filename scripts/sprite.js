@@ -26,6 +26,12 @@ class Sprite {
     }
   }
 
+  setImage(image) {
+    this.image = image;
+    this.width = this.image.width;
+    this.height = this.image.height;
+  }
+
   getHitbox() {
     return {
       x1: this.x,
