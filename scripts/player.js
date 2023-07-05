@@ -57,10 +57,6 @@ class Player extends Character {
         action.action(this);
       }
     });
-
-    if (this.status === 'move') {
-      this._move(this.dx, this.dy, dt);
-    }
   }
 
   getHitbox() {
