@@ -35,28 +35,38 @@ class Player extends Character {
     return `${this.status}-${this.direction}`;
   }
 
-  _getMove(dt) {
+  _getAction() {
     const keysDown = this.inputHandler.keysDown;
     const keysUp = this.inputHandler.keysUp;
 
     this.dx = 0;
     this.dy = 0;
-    this.status = 'idle';
+    let status = 'idle';
 
     playerActions.forEach((action) => {
-      if (action.singlePress) {
-        if (keysDown.has(action.key) && !action.inProgress) {
+      if (keysDown.has(action.key)) {
+        if (!(action.singlePress && action.inProgress)) {
+          // Take action
           action.inProgress = true;
           action.action(this);
-        } else if (keysUp.has(action.key)) {
-          // Action only ends when key is released
-          action.inProgress = false;
-          keysUp.delete(action.key);
+          if (action.name){
+            status = action.name;
+          }
         }
-      } else if (keysDown.has(action.key)) {
-        action.action(this);
+      } else if (action.singlePress && keysUp.has(action.key)) {
+        // Action only ends when key is released
+        action.inProgress = false;
+        keysUp.delete(action.key);
       }
     });
+
+    if (status === 'move') {
+      // Moving diagonally, so normalise
+      this.dx *= Math.SQRT1_2; 
+      this.dy *= Math.SQRT1_2; 
+    }
+
+    return status
   }
 
   getHitbox() {
@@ -92,5 +102,11 @@ class Player extends Character {
       this.weaponSprite.x += 24 - this.weaponSprite.width / 2;
       this.weaponSprite.y += this.height;
     }
+  }
+
+  _magic() {
+    console.log('Magic');
+    this.status = 'attack';
+    this.cooldown = this.magicCooldown;
   }
 }

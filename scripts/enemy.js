@@ -7,34 +7,26 @@ class Enemy extends Character {
     })
   }
 
-  update(dt) {
+  _getAction() {
     const player = this.game.player;
     const dx = this.x - player.x;
     const dy = this.y - player.y;
 
-    if (dx > this.noticeRadius || dy > this.noticeRadius) {
-      this.status = 'idle';
-    } else {
+    if (Math.abs(dx) < this.noticeRadius || Math.abs(dy) < this.noticeRadius) {
       // Calculate distance squared
       const d2 = dx * dx + dy * dy;
   
       if (d2 < this.attackRadius * this.attackRadius) {
-        this.status = 'attack';
+        return 'attack';
       } else if (d2 < this.noticeRadius * this.noticeRadius) {
-        this.status = 'move';
-        this._getMove(dt, dx, dy, d2);
-      } else {
-        this.status = 'idle';
+        // Move towards player
+        const d = Math.sqrt(d2);
+        this.dx = -dx / d;
+        this.dy = -dy / d;
+        return 'move';
       }
     }
 
-    this._updateAnimation(dt);
-  }
-
-  _getMove(dt, dx, dy, d2) {
-    const d = Math.sqrt(d2);
-    const speed = this.speed * dt * 0.1 / d;
-    this.x -= dx * speed;
-    this.y -= dy * speed;
+    return 'idle';
   }
 }

@@ -17,39 +17,40 @@
   const playerActions = [
     {
       key: 'ArrowRight',
+      name: 'move',
       action: (player) => {
         player.dx = 1;
         player.direction = 'right';
-        player.status = 'move';
       }
     },
     {
       key: 'ArrowLeft',
+      name: 'move',
       action: (player) => {
         player.dx = -1;
         player.direction = 'left';
-        player.status = 'move';
       }
     },
     {
       key: 'ArrowDown',
+      name: 'move',
       action: (player) => {
         player.dy = 1;
         player.direction = 'down';
-        player.status = 'move';
       }
     },
     {
       key: 'ArrowUp',
+      name: 'move',
       action: (player) => {
         player.dy = -1;
         player.direction = 'up';
-        player.status = 'move';
       }
     },
     // Attack
     {
       key: ' ',
+      name: 'attack',
       singlePress: true,
       action: (player) => player._attack(),
     },
@@ -64,12 +65,9 @@
     // Magic
     {
       key: 'Control',
+      name: 'magic',
       singlePress: true,
-      action: (player) => {
-        console.log('Magic');
-        player.status = 'attack';
-        palyer.cooldown = player.magicCooldown;
-      }
+      action: (player) => player._magic(),
     },
     // Switch magic
     {

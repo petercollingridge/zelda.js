@@ -16,20 +16,25 @@ class Character extends Sprite {
   }
 
   update(dt) {
-    if (this.status === 'attack' || this.status === 'magic') {
+    if (this.cooldown > 0) {
       this.cooldown -= dt;
       if (this.cooldown <= 0) {
         this.cooldown = 0;
         this.status = 'idle';
       }
     } else {
-      this._getMove(dt);
+      this.status = this._getAction();
       if (this.status === 'move') {
         this._move(this.dx, this.dy, dt);
       }
     }
 
     this._updateAnimation(dt);
+  }
+
+  _getAction() {
+    // Overridden in child objects
+    return 'idle';
   }
 
   _updateAnimation(dt) {
@@ -79,16 +84,8 @@ class Character extends Sprite {
     return this.status;
   }
 
-  _getMove(dt) {
-    // TODO
-  }
-
   _move(dx, dy, dt) {
-    let speed = dt * this.speed * 0.1;
-    if (dx && dy) {
-      // Moving diagonally, so normalise
-      speed *= Math.SQRT1_2; 
-    }
+    const speed = dt * this.speed * 0.1;
 
     if (dx) {
       this.x += dx * speed;
